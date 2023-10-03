@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div
     :style="{
       backgroundImage:
@@ -84,6 +85,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -100,7 +102,6 @@ const register = async () => {
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email.value, password.value)
     .then(() => {
-      console.log("user created");
       router.push("/");
     })
     .catch((error) => {

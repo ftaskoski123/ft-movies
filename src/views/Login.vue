@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div
     :style="{
       backgroundImage:
@@ -84,6 +85,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
