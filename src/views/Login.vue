@@ -72,7 +72,7 @@ const password = ref<string>("");
 const errorMsg = ref<string>("");
 
 const redirectToRegister = () => {
-  router.push("/register"); // Redirect to the registration page
+  router.push("/register"); 
 };
 
 const login = async () => {
