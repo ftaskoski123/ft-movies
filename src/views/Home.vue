@@ -57,6 +57,8 @@
           alt=""
           class="w-full h-auto"
         />
+        <p class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]">{{ movie.vote_average.toFixed(1) }}</p>
+
       </div>
       <div
         v-else
@@ -69,6 +71,8 @@
           alt=""
           class="w-full h-auto"
         />
+        <p class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]">{{ movie.vote_average.toFixed(1) }}</p>
+
       </div>
     </div>
   </div>
