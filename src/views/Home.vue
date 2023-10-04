@@ -56,9 +56,23 @@
           :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
           alt=""
           class="w-full h-auto"
+          @mouseenter="showOverview(movie.id)"
+          @mouseleave="hideOverview"
         />
-        <p class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]">{{ movie.vote_average.toFixed(1) }}</p>
-
+        <p
+          class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]"
+        >
+          {{ movie.vote_average.toFixed(1) }}
+        </p>
+        <p class="absolute bottom-0 left-0 py-2 px-3 text-white text-sm">
+          {{ movie.original_title }}
+        </p>
+        <p
+          v-if="showOverviewId === movie.id"
+          class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
+        >
+          {{ movie.overview }}
+        </p>
       </div>
       <div
         v-else
@@ -70,16 +84,29 @@
           :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
           alt=""
           class="w-full h-auto"
+          @mouseenter="showOverview(movie.id)"
         />
-        <p class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]">{{ movie.vote_average.toFixed(1) }}</p>
-
+        <p
+          class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]"
+        >
+          {{ movie.vote_average.toFixed(1) }}
+        </p>
+        <p class="absolute bottom-0 left-0 py-2 px-3 text-white text-sm">
+          {{ movie.original_title }}
+        </p>
+        <p
+          v-if="showOverviewId === movie.id"
+          class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
+        >
+          {{ movie.overview }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, } from "vue";
 import axios from "axios";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
@@ -91,6 +118,7 @@ const apiKey = "7b5d0f8cf0589dd9221f592daa43db40";
 const movies = ref<any>([]);
 const searchedMovies = ref<any>([]);
 const searchQuery = ref<string>("");
+const showOverviewId = ref<number | boolean>(false);
 
 const handleSignOut = () => {
   signOut(auth).then(() => {
@@ -98,6 +126,13 @@ const handleSignOut = () => {
   });
 };
 
+const showOverview = (movieId: number) => {
+  showOverviewId.value = movieId;
+};
+
+const hideOverview = () => {
+  showOverviewId.value = false;
+};
 const getMovies = async () => {
   const response = axios.get(
     `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
