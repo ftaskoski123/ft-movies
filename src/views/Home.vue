@@ -67,14 +67,16 @@
         <p class="absolute bottom-0 left-0 py-2 px-3 text-white text-sm">
           {{ movie.original_title }}
         </p>
-        <p
-          v-if="showOverviewId === movie.id"
-          class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
-          @mouseenter="showOverview(movie.id)"
-          @mouseleave="hideOverview()"
-        >
-          {{ movie.overview }}
-        </p>
+        <transition name="fade">
+          <p
+            v-if="showOverviewId === movie.id"
+            class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
+            @mouseenter="showOverview(movie.id)"
+            @mouseleave="hideOverview()"
+          >
+            {{ movie.overview }}
+          </p>
+        </transition>
       </div>
       <div
         v-else
@@ -97,14 +99,16 @@
         <p class="absolute bottom-0 left-0 py-2 px-3 text-white text-sm">
           {{ movie.original_title }}
         </p>
-        <p
-          v-if="showOverviewId === movie.id"
-          class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
-          @mouseenter="showOverview(movie.id)"
-          @mouseleave="hideOverview()"
-        >
-          {{ movie.overview }}
-        </p>
+        <transition name="fade">
+          <p
+            v-if="showOverviewId === movie.id"
+            class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
+            @mouseenter="showOverview(movie.id)"
+            @mouseleave="hideOverview()"
+          >
+            {{ movie.overview }}
+          </p>
+        </transition>
       </div>
     </div>
   </div>
@@ -167,6 +171,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .hero {
   @apply h-[400px] relative after:content-[''] after:absolute after:h-full after:w-full after:bg-[rgba(0,0,0,0.6)] after:left-0 after:top-0;
 }
