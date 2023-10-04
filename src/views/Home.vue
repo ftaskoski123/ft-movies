@@ -70,6 +70,8 @@
         <p
           v-if="showOverviewId === movie.id"
           class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
+          @mouseenter="showOverview(movie.id)"
+          @mouseleave="hideOverview()"
         >
           {{ movie.overview }}
         </p>
@@ -85,6 +87,7 @@
           alt=""
           class="w-full h-auto"
           @mouseenter="showOverview(movie.id)"
+          @mouseleave="hideOverview"
         />
         <p
           class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]"
@@ -97,6 +100,8 @@
         <p
           v-if="showOverviewId === movie.id"
           class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
+          @mouseenter="showOverview(movie.id)"
+          @mouseleave="hideOverview()"
         >
           {{ movie.overview }}
         </p>
@@ -106,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
