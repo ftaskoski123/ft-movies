@@ -45,7 +45,8 @@
       />
     </div>
 
-    <div class="grid mt-12 grid-cols-4 gap-8 px-60 py-20">
+    <div class="grid mt-12 grid-cols-4 gap-24 px-60 py-20">
+      <!--Searched movies-->
       <div
         v-if="searchQuery"
         v-for="movie in searchedMovies"
@@ -77,7 +78,16 @@
             {{ movie.overview }}
           </p>
         </transition>
+        <div class="absolute bottom-[50] left-0 mt-4">
+          <button
+            @click="viewDetails(movie.id)"
+            class="text-xl text-white bg-[#c92502] rounded py-2 px-4"
+          >
+            Get More Info
+          </button>
+        </div>
       </div>
+      <!--Movies-->
       <div
         v-else
         v-for="(movie, index) in movies"
@@ -109,6 +119,15 @@
             {{ movie.overview }}
           </p>
         </transition>
+
+        <div class="absolute bottom-[50] left-0 mt-4">
+          <button
+            @click="viewDetails(movie.id)"
+            class="text-xl text-white bg-[#c92502] rounded py-2 px-4"
+          >
+            Get More Info
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -159,6 +178,10 @@ const getsearchedMovies = async () => {
   searchedMovies.value = data.data.results;
 
   console.log(searchedMovies.value);
+};
+
+const viewDetails = (movieId: number) => {
+  router.push(`/movies/${movieId}`);
 };
 
 onMounted(() => {
