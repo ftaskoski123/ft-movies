@@ -37,6 +37,7 @@
 
     <div class="max-w-[400px] mx-auto mb-6 px-4">
       <input
+        @keyup="getsearchedMovies"
         type="text"
         placeholder="Search for movies..."
         v-model="searchQuery"
@@ -46,8 +47,21 @@
 
     <div class="grid mt-12 grid-cols-4 gap-8 px-60 py-20">
       <div
-        v-for="movie in filteredMovies"
+        v-if="searchQuery"
+        v-for="movie in searchedMovies"
         :key="movie.id"
+        class="relative group"
+      >
+        <img
+          :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+          alt=""
+          class="w-full h-auto"
+        />
+      </div>
+      <div
+        v-else
+        v-for="(movie, index) in movies"
+        :key="movie.id || index"
         class="relative group"
       >
         <img
@@ -71,8 +85,8 @@ const isLoggedIn = ref<boolean>(false);
 const auth = getAuth();
 const apiKey = "7b5d0f8cf0589dd9221f592daa43db40";
 const movies = ref<any>([]);
-  const searchQuery = ref<string>(""); // The search query input binding
-
+const searchedMovies = ref<any>([]);
+const searchQuery = ref<string>("");
 
 const handleSignOut = () => {
   signOut(auth).then(() => {
@@ -89,16 +103,21 @@ const getMovies = async () => {
   console.log(movies.value);
 };
 
-const filteredMovies = computed(() => {
-  return movies.value.filter((movie : any) =>
-    movie.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+const getsearchedMovies = async () => {
+  const response = axios.get(
+    `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&page=1&query=${searchQuery.value}`
   );
-});
+  const data = await response;
+  searchedMovies.value = data.data.results;
+
+  console.log(searchedMovies.value);
+};
 
 onMounted(() => {
   onAuthStateChanged(auth, (user) => {
     isLoggedIn.value = !!user;
   });
+
   getMovies();
 });
 </script>
@@ -112,5 +131,4 @@ onMounted(() => {
     @apply h-[500px];
   }
 }
-
 </style>
