@@ -26,6 +26,7 @@
             <span class="font-medium">Now</span> Streaming
           </h1>
           <button
+            @click="scrollToMovies"
             href="#"
             class="text-xl self-start text-white bg-[#c92502] py-2 px-4 rounded"
           >
@@ -41,11 +42,11 @@
         type="text"
         placeholder="Search for movies..."
         v-model="searchQuery"
-        class="w-[20%] absolute left-[15.5%] px-4 py-2 mt-10 border border-gray-800 rounded-md focus:outline-none  focus:border-[#c92502] bg-[#3B3B3B]"
+        class="w-[20%] absolute left-[15.5%] px-4 py-2 mt-10 border border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B]"
       />
     </div>
 
-    <div class="grid mt-12 grid-cols-4 gap-24 px-60 py-20">
+    <div id="movies" class="grid mt-12 grid-cols-4 gap-24 px-60 py-20">
       <!--Searched movies-->
       <div
         v-if="searchQuery"
@@ -75,7 +76,7 @@
             @mouseenter="showOverview(movie.id)"
             @mouseleave="hideOverview()"
           >
-          {{ truncatedOverview(movie.overview) }}
+            {{ truncatedOverview(movie.overview) }}
           </p>
         </transition>
         <div class="absolute bottom-[50] left-0 mt-4">
@@ -116,7 +117,7 @@
             @mouseenter="showOverview(movie.id)"
             @mouseleave="hideOverview()"
           >
-          {{ truncatedOverview(movie.overview) }}
+            {{ truncatedOverview(movie.overview) }}
           </p>
         </transition>
 
@@ -154,7 +155,14 @@ const handleSignOut = () => {
   });
 };
 
-const truncatedOverview = (overview : string) => {
+const scrollToMovies = () => {
+  const moviesElement = document.getElementById("movies");
+  if (moviesElement) {
+    moviesElement.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
+const truncatedOverview = (overview: string) => {
   const maxLength = 180;
   if (overview.length <= maxLength) {
     return overview;
