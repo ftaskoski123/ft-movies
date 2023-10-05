@@ -2,16 +2,16 @@
   <div>
     <button
       @click="$router.go(-1)"
-      class="bg-red-500 px-4 py-2 text-sm font-medium absolute top-20 left-60  rounded text-white  hover:bg-red-700"
+      class="bg-red-500 px-4 py-2 text-sm font-medium absolute top-20 left-[25%]  rounded text-white  hover:bg-red-700"
     >
       Back
     </button>
     <div v-for="movie in movies" :key="movie.id" class="flex items-center space-x-4 mb-4">
-      <div class="absolute top-40 left-60 flex items-center justify-center">
+      <div class="absolute top-40 left-[25%] flex items-center justify-center">
         <img
           :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
           alt=""
-          class="h-[500px]"
+          class=""
         />
       </div>
       <div class="absolute top-40 left-[40%] space-y-2 text-left text-white">
