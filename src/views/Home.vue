@@ -42,7 +42,7 @@
         type="text"
         placeholder="Search for movies..."
         v-model="searchQuery"
-        class="w-[20%] absolute left-[15.5%] px-4 py-2 mt-10 border border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B]"
+        class="w-[20%] absolute left-[15.5%] px-4 py-2 mt-10 border text-white border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B]"
       />
     </div>
 
