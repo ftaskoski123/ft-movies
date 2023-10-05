@@ -54,7 +54,7 @@
         <img
           :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
           alt=""
-          class="w-full md:w-[200px] h-auto"
+          class="w-full md:w-full h-auto"
           @mouseenter="showOverview(movie.id)"
           @mouseleave="hideOverview"
         />
