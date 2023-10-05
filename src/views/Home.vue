@@ -41,7 +41,7 @@
         type="text"
         placeholder="Search for movies..."
         v-model="searchQuery"
-        class="w-[20%] absolute left-[15.5%] px-4 py-2 mt-10 border border-gray-300 rounded-md focus:outline-none focus:border-[#c92502]"
+        class="w-[20%] absolute left-[15.5%] px-4 py-2 mt-10 border border-gray-800 rounded-md focus:outline-none  focus:border-[#c92502] bg-[#3B3B3B]"
       />
     </div>
 
@@ -75,7 +75,7 @@
             @mouseenter="showOverview(movie.id)"
             @mouseleave="hideOverview()"
           >
-            {{ movie.overview }}
+          {{ truncatedOverview(movie.overview) }}
           </p>
         </transition>
         <div class="absolute bottom-[50] left-0 mt-4">
@@ -116,7 +116,7 @@
             @mouseenter="showOverview(movie.id)"
             @mouseleave="hideOverview()"
           >
-            {{ movie.overview }}
+          {{ truncatedOverview(movie.overview) }}
           </p>
         </transition>
 
@@ -152,6 +152,15 @@ const handleSignOut = () => {
   signOut(auth).then(() => {
     router.push("/login");
   });
+};
+
+const truncatedOverview = (overview : string) => {
+  const maxLength = 180;
+  if (overview.length <= maxLength) {
+    return overview;
+  } else {
+    return `${overview.substring(0, maxLength)} ...`;
+  }
 };
 
 const showOverview = (movieId: number) => {

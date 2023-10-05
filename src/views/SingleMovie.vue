@@ -2,25 +2,26 @@
   <div>
     <button
       @click="$router.go(-1)"
-      class="bg-red-500 px-4 py-2 rounded text-white font-bold hover:bg-red-700"
+      class="bg-red-500 px-4 py-2 text-sm font-medium absolute top-20 left-60  rounded text-white  hover:bg-red-700"
     >
       Back
     </button>
-    <div v-for="movie in movies" :key="movie.id">
-      <div class="movie-info">
-      <div class="movie-img">
+    <div v-for="movie in movies" :key="movie.id" class="flex items-center space-x-4 mb-4">
+      <div class="absolute top-40 left-60 flex items-center justify-center">
         <img
           :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
           alt=""
+          class="h-[500px]"
         />
       </div>
-      <div class="movie-content">
-        <h1>Title: {{ movie.title }}</h1>
-        <p class="movie-fact tagline">
-          <span>Tagline:</span> "{{ movie.tagline }}"
+      <div class="absolute top-40 left-[40%] space-y-2 text-left text-white">
+        <h1 class="text-3xl font-semibold">Title: {{ movie.title }}</h1>
+        <p class=" text-sm">
+          <span class="font-semibold underline">Tagline:</span> "
+          <span class="italic">{{ movie.tagline }}"</span>
         </p>
-        <p class="movie-fact">
-          <span>Released:</span>
+        <p class=" text-sm">
+          <span class="font-semibold underline">Released:</span>
           {{
             new Date(movie.release_date).toLocaleString('en-us', {
               month: 'long',
@@ -29,11 +30,11 @@
             })
           }}
         </p>
-        <p class="movie-fact">
-          <span>Duration:</span> {{ movie.runtime }} minutes
+        <p class=" text-sm">
+          <span class="font-semibold underline">Duration:</span> {{ movie.runtime }} minutes
         </p>
-        <p class="movie-fact">
-          <span>Revenue:</span>
+        <p class=" text-sm">
+          <span class="font-semibold underline">Revenue:</span>
           {{
             movie.revenue.toLocaleString('en-us', {
               style: 'currency',
@@ -41,11 +42,12 @@
             })
           }}
         </p>
-        <p class="movie-fact"><span>Overview:</span> {{ movie.overview }}</p>
+        <p class=" text-sm">
+          <span class="font-semibold underline">Overview:</span> {{ movie.overview }}
+        </p>
       </div>
     </div>
   </div>
-    </div>
 </template>
 
 <script setup lang="ts">
@@ -70,3 +72,4 @@ onMounted(() => {
   getSingleMovie();
 });
 </script>
+

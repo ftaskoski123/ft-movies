@@ -39,4 +39,8 @@ import { RouterView } from "vue-router";
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
+
+body {
+  background-color: #191b1c;
+}
 </style>
