@@ -70,7 +70,7 @@
         <transition name="fade">
           <p
             v-if="showOverviewId === movie.id"
-            class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
+            class="absolute md:bottom-0 bottom-[9.5%] right-0 py-2 px-3 text-white text-sm bg-red-500"
             @mouseenter="showOverview(movie.id)"
             @mouseleave="hideOverview()"
           >
