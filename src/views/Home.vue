@@ -33,7 +33,7 @@
     </div>
 
     <!-- Search input -->
-    <div class="max-w-[400px] mx-auto mb-6 px-4">
+    <div class="max-w-[400px] mx-auto mb-6 px-4 md:mb-20">
       <input
         @keyup="getsearchedMovies"
         type="text"
@@ -44,40 +44,42 @@
     </div>
 
     <!-- Movies section -->
-    <div id="movies" class="grid mt-12 gap-4 px-4 py-4 md:grid-cols-4 md:gap-24 md:px-60 md:py-20">
+    <div id="movies" class="grid mt-12 gap-4 px-4 py-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
       <!-- Searched movies or Movies -->
       <div
         v-for="(movie, index) in (searchQuery ? searchedMovies : movies)"
         :key="movie.id || index"
-        class="relative group"
+        class="relative group flex flex-col"
       >
-        <img
-          :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-          alt=""
-          class="w-full md:w-full h-auto"
-          @mouseenter="showOverview(movie.id)"
-          @mouseleave="hideOverview"
-        />
-        <!-- Movie details and button -->
-        <p
-          class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]"
-        >
-          {{ movie.vote_average.toFixed(1) }}
-        </p>
-        <p class="absolute md:bottom-0 bottom-14 left-0 py-2 px-3 text-white text-sm">
-          {{ movie.original_title }}
-        </p>
-        <transition name="fade">
-          <p
-            v-if="showOverviewId === movie.id"
-            class="absolute md:bottom-0 bottom-[9.5%] right-0 py-2 px-3 text-white text-sm bg-red-500"
+        <div class="relative">
+          <img
+            :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+            alt=""
+            class="w-full h-auto lg:w-full xl:w-full"
             @mouseenter="showOverview(movie.id)"
-            @mouseleave="hideOverview()"
+            @mouseleave="hideOverview"
+          />
+          <!-- Movie details and button -->
+          <p
+            class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]"
           >
-            {{ truncatedOverview(movie.overview) }}
+            {{ movie.vote_average.toFixed(1) }}
           </p>
-        </transition>
-        <div class="md:absolute md:bottom-[50] left-0 md:mt-4 mt-2">
+          <p class="absolute md:bottom-0 bottom-14 left-0 py-2 px-3 text-white text-sm">
+            {{ movie.original_title }}
+          </p>
+          <transition name="fade">
+            <p
+              v-if="showOverviewId === movie.id"
+              class="absolute bottom-0  right-0 py-2 px-3 text-white text-sm bg-red-500"
+              @mouseenter="showOverview(movie.id)"
+              @mouseleave="hideOverview()"
+            >
+              {{ truncatedOverview(movie.overview) }}
+            </p>
+          </transition>
+        </div>
+        <div class="mt-4">
           <button
             @click="viewDetails(movie.id)"
             class="text-xl text-white hover:bg-[#c92502] rounded border border-[#c92502] py-2 px-4"
