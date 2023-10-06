@@ -144,13 +144,18 @@ const toggleFavorite = (movieId: number, title: string) => {
 
   if (isFavorite(movieId)) {
     // The movie is already in favorites, so remove it
-    axios.delete(userFavoritesRef).catch((error) => {
+    axios.delete(userFavoritesRef).then(() => {
+      userFavorites.value = userFavorites.value.filter((id) => id !== movieId);
+    }).catch((error) => {
       console.error("Error removing favorite:", error);
     });
   } else {
     // The movie is not in favorites, so add it with details
     axios
       .put(userFavoritesRef, { title })
+      .then(() => {
+        userFavorites.value.push(movieId);
+      })
       .catch((error) => {
         console.error("Error adding favorite:", error);
       });
@@ -219,10 +224,10 @@ onMounted(async () => {
   if (auth.currentUser) {
     const userId = auth.currentUser.uid;
     const response = await axios.get(
-      `https://movies-3fd3e-default-rtdb.firebaseio.com/favorites/${userId}/movieId.json`
+      `https://movies-3fd3e-default-rtdb.firebaseio.com/favorites/${userId}.json`
     );
-    userFavorites.value = response.data || [];
-    console.log('fave',userFavorites.value);  
+    userFavorites.value = response.data ? Object.keys(response.data).map(Number) : [];
+    console.log('fave', userFavorites.value);  
   }
 
 
