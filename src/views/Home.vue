@@ -90,7 +90,14 @@
             </p>
           </transition>
           <button
-            @click="toggleFavorite(movie.id, movie.original_title)"
+            @click="
+              toggleFavorite(
+                movie.id,
+                movie.original_title,
+                movie.overview,
+                movie.poster_path
+              )
+            "
             class="absolute top-2 right-2 text-lg text-white bg-[#c92502] py-1 px-2 rounded-full"
           >
             {{ isFavorite(movie.id) ? "Remove Favorite" : "Add Favorite" }}
@@ -130,11 +137,10 @@ console.log(getAuth().currentUser?.getIdTokenResult());
 
 const user = auth.currentUser;
 
-
 const isFavorite = (movieId: number) => {
   return userFavorites.value.includes(movieId);
 };
-const toggleFavorite = (movieId: number, title: string) => {
+const toggleFavorite = (movieId: number,title: string,overview: string,poster_path: string) => {
   if (!user) {
     return;
   }
@@ -143,16 +149,19 @@ const toggleFavorite = (movieId: number, title: string) => {
   const userFavoritesRef = `https://movies-3fd3e-default-rtdb.firebaseio.com/favorites/${userId}/${movieId}.json`;
 
   if (isFavorite(movieId)) {
-    // The movie is already in favorites, so remove it
-    axios.delete(userFavoritesRef).then(() => {
-      userFavorites.value = userFavorites.value.filter((id) => id !== movieId);
-    }).catch((error) => {
-      console.error("Error removing favorite:", error);
-    });
-  } else {
-    // The movie is not in favorites, so add it with details
     axios
-      .put(userFavoritesRef, { title })
+      .delete(userFavoritesRef)
+      .then(() => {
+        userFavorites.value = userFavorites.value.filter(
+          (id) => id !== movieId
+        );
+      })
+      .catch((error) => {
+        console.error("Error removing favorite:", error);
+      });
+  } else {
+    axios
+      .put(userFavoritesRef, { title, overview, poster_path })
       .then(() => {
         userFavorites.value.push(movieId);
       })
@@ -226,13 +235,11 @@ onMounted(async () => {
     const response = await axios.get(
       `https://movies-3fd3e-default-rtdb.firebaseio.com/favorites/${userId}.json`
     );
-    userFavorites.value = response.data ? Object.keys(response.data).map(Number) : [];
-    console.log('fave', userFavorites.value);  
+    userFavorites.value = response.data
+      ? Object.keys(response.data).map(Number)
+      : [];
+    console.log("fave", userFavorites.value);
   }
-
-
-
-
 });
 </script>
 
