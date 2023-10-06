@@ -7,7 +7,9 @@
         alt=""
         class="w-full h-full object-cover"
       />
-      <div class="z-[99] absolute w-full h-full flex flex-col justify-center m-0 top-0">
+      <div
+        class="z-[99] absolute w-full h-full flex flex-col justify-center m-0 top-0"
+      >
         <button
           @click="handleSignOut"
           class="text-xl text-white bg-[#c92502] top-4 right-4 py-2 px-4 rounded absolute"
@@ -15,10 +17,14 @@
           Sign Out
         </button>
         <div class="w-full max-w-[1400px] mx-auto my-0 px-4 py-0">
-          <span class="font-semibold text-lg uppercase text-[#c92502] mb-2 md:text-[22px]">
+          <span
+            class="font-semibold text-lg uppercase text-[#c92502] mb-2 md:text-[22px]"
+          >
             Now Streaming
           </span>
-          <h1 class="text-white text-4xl font-extralight mb-2 md:text-5xl lg:text-6xl">
+          <h1
+            class="text-white text-4xl font-extralight mb-2 md:text-5xl lg:text-6xl"
+          >
             <span class="font-medium">Now</span> Streaming
           </h1>
           <button
@@ -44,10 +50,13 @@
     </div>
 
     <!-- Movies section -->
-    <div id="movies" class="grid mt-12 gap-4 px-4 py-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
+    <div
+      id="movies"
+      class="grid mt-12 gap-4 px-4 py-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6"
+    >
       <!-- Searched movies or Movies -->
       <div
-        v-for="(movie, index) in (searchQuery ? searchedMovies : movies)"
+        v-for="(movie, index) in searchQuery ? searchedMovies : movies"
         :key="movie.id || index"
         class="relative group flex flex-col"
       >
@@ -65,19 +74,27 @@
           >
             {{ movie.vote_average.toFixed(1) }}
           </p>
-          <p class="absolute md:bottom-0 bottom-14 left-0 py-2 px-3 text-white text-sm">
+          <p
+            class="absolute md:bottom-0 bottom-14 left-0 py-2 px-3 text-white text-sm"
+          >
             {{ movie.original_title }}
           </p>
           <transition name="fade">
             <p
               v-if="showOverviewId === movie.id"
-              class="absolute bottom-0  right-0 py-2 px-3 text-white text-sm bg-red-500"
+              class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
               @mouseenter="showOverview(movie.id)"
               @mouseleave="hideOverview()"
             >
               {{ truncatedOverview(movie.overview) }}
             </p>
           </transition>
+          <button
+            @click="toggleFavorite(movie.id, movie.original_title)"
+            class="absolute top-2 right-2 text-lg text-white bg-[#c92502] py-1 px-2 rounded-full"
+          >
+            {{ isFavorite(movie.id) ? "Remove Favorite" : "Add Favorite" }}
+          </button>
         </div>
         <div class="mt-4">
           <button
@@ -106,6 +123,39 @@ const movies = ref<any>([]);
 const searchedMovies = ref<any>([]);
 const searchQuery = ref<string>("");
 const showOverviewId = ref<number | boolean>(false);
+
+const userFavorites = ref<any[]>([]);
+
+console.log(getAuth().currentUser?.getIdTokenResult());
+
+const user = auth.currentUser;
+
+
+const isFavorite = (movieId: number) => {
+  return userFavorites.value.includes(movieId);
+};
+const toggleFavorite = (movieId: number, title: string) => {
+  if (!user) {
+    return;
+  }
+
+  const userId = auth.currentUser?.uid;
+  const userFavoritesRef = `https://movies-3fd3e-default-rtdb.firebaseio.com/favorites/${userId}/${movieId}.json`;
+
+  if (isFavorite(movieId)) {
+    // The movie is already in favorites, so remove it
+    axios.delete(userFavoritesRef).catch((error) => {
+      console.error("Error removing favorite:", error);
+    });
+  } else {
+    // The movie is not in favorites, so add it with details
+    axios
+      .put(userFavoritesRef, { title })
+      .catch((error) => {
+        console.error("Error adding favorite:", error);
+      });
+  }
+};
 
 const handleSignOut = () => {
   signOut(auth).then(() => {
@@ -159,12 +209,25 @@ const viewDetails = (movieId: number) => {
   router.push(`/movies/${movieId}`);
 };
 
-onMounted(() => {
+onMounted(async () => {
   onAuthStateChanged(auth, (user) => {
     isLoggedIn.value = !!user;
   });
 
   getMovies();
+
+  if (auth.currentUser) {
+    const userId = auth.currentUser.uid;
+    const response = await axios.get(
+      `https://movies-3fd3e-default-rtdb.firebaseio.com/favorites/${userId}/movieId.json`
+    );
+    userFavorites.value = response.data || [];
+    console.log('fave',userFavorites.value);  
+  }
+
+
+
+
 });
 </script>
 
