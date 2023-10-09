@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Home from '../views/Home.vue'
-import About from '@/views/About.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import SingleMovie from '../views/SingleMovie.vue'
@@ -21,16 +20,7 @@ const router = createRouter({
       }
 
     },
-    {
-      path: '/about',
-      name: 'about',
-      component:About,
-      meta: {
-        requiresAuth: true,
-        title: 'About'
-      }
 
-    },
     {
       path: '/login',
       name: 'login',
