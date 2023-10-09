@@ -76,7 +76,6 @@ const getSingleMovie = async () => {
   );
   const data = await response;
   movies.value = [data.data];
-  console.log("movies", movies.value);
 };
 onMounted(() => {
   getSingleMovie();

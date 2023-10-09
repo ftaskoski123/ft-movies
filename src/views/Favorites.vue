@@ -16,12 +16,11 @@
         class="relative group flex flex-col"
       >
         <div class="relative">
-          <!-- Display the movie poster -->
           <img
             :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
             alt=""
             class="w-full h-auto lg:w-full xl:w-full"
-            @mouseenter="showOverview(movie.id)"
+            @mouseenter="showOverview(movie.movieId)"
             @mouseleave="hideOverview"
           />
 
@@ -32,9 +31,9 @@
           </p>
           <transition name="fade">
             <p
-              v-if="showOverviewId === movie.id"
+              v-if="showOverviewId === movie.movieId"
               class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
-              @mouseenter="showOverview(movie.id)"
+              @mouseenter="showOverview(movie.movieId)"
               @mouseleave="hideOverview()"
             >
               <!-- Display the movie overview -->
@@ -80,9 +79,7 @@ const getFavorites = async () => {
       `https://movies-3fd3e-default-rtdb.firebaseio.com/favorites/${userId}.json`
     );
     
-    // Assuming the response contains an array of favorite movies
     movies.value = Object.values(response.data || {});
-    console.log("faves", movies.value);
   }
 };
 onMounted(async () => {
@@ -100,12 +97,4 @@ onMounted(async () => {
   opacity: 0;
 }
 
-.hero {
-  @apply h-[400px] relative after:content-[''] after:absolute after:h-full after:w-full after:bg-[rgba(0,0,0,0.6)] after:left-0 after:top-0;
-}
-@media (min-width: 750px) {
-  .hero {
-    @apply h-[500px];
-  }
-}
 </style>

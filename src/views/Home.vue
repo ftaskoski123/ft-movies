@@ -159,7 +159,6 @@ const showOverviewId = ref<number | boolean>(false);
 
 const userFavorites = ref<any[]>([]);
 
-console.log(getAuth().currentUser?.getIdTokenResult());
 
 const user = auth.currentUser;
 
@@ -188,16 +187,14 @@ const toggleFavorite = (
         );
       })
       .catch((error) => {
-        console.error("Error removing favorite:", error);
       });
   } else {
     axios
-      .put(userFavoritesRef, { title, overview, poster_path })
+      .put(userFavoritesRef, { title, overview, poster_path, movieId })
       .then(() => {
         userFavorites.value.push(movieId);
       })
       .catch((error) => {
-        console.error("Error adding favorite:", error);
       });
   }
 };
