@@ -49,9 +49,9 @@
       class="w-full md:w-[70%] px-4 py-2 md:py-2 md:ml-2 border text-white border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B] mb-2 md:mb-0"
     />
 
-    <button class="flex-shrink-0 w-auto text-lg text-white bg-[#c92502] py-2 px-4 rounded md:ml-2 mt-2 md:mt-0">
+    <router-link to="/favorites" class="flex-shrink-0 w-auto text-lg text-white bg-[#c92502] py-2 px-4 rounded md:ml-2 mt-2 md:mt-0">
       View Favorites
-    </button>
+    </router-link>
   </div>
 </div>
 

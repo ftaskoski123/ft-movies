@@ -5,6 +5,7 @@ import About from '@/views/About.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import SingleMovie from '../views/SingleMovie.vue'
+import Favorites from '@/views/Favorites.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +62,15 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
         title: 'Movie'
+      }
+    },
+    {
+      path: '/favorites',
+      name: 'favorites',
+      component:Favorites,
+      meta: {
+        requiresAuth: true,
+        title: 'Favorites'
       }
     }
 
