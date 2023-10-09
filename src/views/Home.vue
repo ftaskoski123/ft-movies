@@ -40,20 +40,23 @@
 
     <!-- Search input -->
     <div class="max-w-[400px] mx-auto md:absolute px-4 md:mb-20 md:mt-2">
-  <div class="md:flex md:items-center mt-2 md:mt-0 md:justify-start">
-    <input
-      @keyup="getsearchedMovies"
-      type="text"
-      placeholder="Search for movies..."
-      v-model="searchQuery"
-      class="w-full md:w-[70%] px-4 py-2 md:py-2 md:ml-2 border text-white border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B] mb-2 md:mb-0"
-    />
+      <div class="md:flex md:items-center mt-2 md:mt-0 md:justify-start">
+        <input
+          @keyup="getsearchedMovies"
+          type="text"
+          placeholder="Search for movies..."
+          v-model="searchQuery"
+          class="w-full md:w-[70%] px-4 py-2 md:py-2 md:ml-2 border text-white border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B] mb-2 md:mb-0"
+        />
 
-    <router-link to="/favorites" class="flex-shrink-0 w-auto text-lg text-white bg-[#c92502] py-2 px-4 rounded md:ml-2 mt-2 md:mt-0">
-      View Favorites
-    </router-link>
-  </div>
-</div>
+        <router-link
+          to="/favorites"
+          class="flex-shrink-0 w-auto text-lg text-white bg-[#c92502] py-2 px-4 rounded md:ml-2 mt-2 md:mt-0"
+        >
+          View Favorites
+        </router-link>
+      </div>
+    </div>
 
     <!-- Movies section -->
     <div
@@ -67,34 +70,14 @@
         class="relative group flex flex-col"
       >
         <div class="relative">
-          <img
-            :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-            alt=""
-            class="w-full h-auto lg:w-full xl:w-full"
-            @mouseenter="showOverview(movie.id)"
-            @mouseleave="hideOverview"
+          <Movies
+            :id="movie.id"
+            :original_title="movie.title"
+            :overview="movie.overview"
+            :poster_path="movie.poster_path"
+            :vote_average="movie.vote_average"
           />
-          <!-- Movie details and button -->
-          <p
-            class="absolute top-0 left-0 py-2 px-3 text-white text-sm rounded-br-lg bg-[#c92502]"
-          >
-            {{ movie.vote_average.toFixed(1) }}
-          </p>
-          <p
-            class="absolute md:bottom-0 bottom-0 left-0 py-2 px-3 text-white text-sm"
-          >
-            {{ movie.original_title }}
-          </p>
-          <transition name="fade">
-            <p
-              v-if="showOverviewId === movie.id"
-              class="absolute bottom-0 right-0 py-2 px-3 text-white text-sm bg-red-500"
-              @mouseenter="showOverview(movie.id)"
-              @mouseleave="hideOverview()"
-            >
-              {{ truncatedOverview(movie.overview) }}
-            </p>
-          </transition>
+
           <button
             @click="
               toggleFavorite(
@@ -147,6 +130,7 @@ import { onMounted, ref } from "vue";
 import axios from "axios";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
+import Movies from "@/components/Movies.vue";
 
 const router = useRouter();
 const isLoggedIn = ref<boolean>(false);
@@ -155,10 +139,8 @@ const apiKey = "7b5d0f8cf0589dd9221f592daa43db40";
 const movies = ref<any>([]);
 const searchedMovies = ref<any>([]);
 const searchQuery = ref<string>("");
-const showOverviewId = ref<number | boolean>(false);
 
 const userFavorites = ref<any[]>([]);
-
 
 const user = auth.currentUser;
 
@@ -186,16 +168,14 @@ const toggleFavorite = (
           (id) => id !== movieId
         );
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   } else {
     axios
       .put(userFavoritesRef, { title, overview, poster_path, movieId })
       .then(() => {
         userFavorites.value.push(movieId);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   }
 };
 
@@ -212,22 +192,6 @@ const scrollToMovies = () => {
   }
 };
 
-const truncatedOverview = (overview: string) => {
-  const maxLength = 180;
-  if (overview.length <= maxLength) {
-    return overview;
-  } else {
-    return `${overview.substring(0, maxLength)} ...`;
-  }
-};
-
-const showOverview = (movieId: number) => {
-  showOverviewId.value = movieId;
-};
-
-const hideOverview = () => {
-  showOverviewId.value = false;
-};
 const getMovies = async () => {
   const response = axios.get(
     `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
