@@ -39,15 +39,21 @@
     </div>
 
     <!-- Search input -->
-    <div class="max-w-[400px] mx-auto mb-6 px-4 md:mb-20">
-      <input
-        @keyup="getsearchedMovies"
-        type="text"
-        placeholder="Search for movies..."
-        v-model="searchQuery"
-        class="md:w-[20%] absolute left-[15.5%] mt-2 w-[70%] md:left-[25%] md:-translate-x-1/2 px-4 py-2 md:mt-10 border text-white border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B]"
-      />
-    </div>
+    <div class="max-w-[400px] mx-auto md:absolute px-4 md:mb-20 md:mt-2">
+  <div class="md:flex md:items-center mt-2 md:mt-0 md:justify-start">
+    <input
+      @keyup="getsearchedMovies"
+      type="text"
+      placeholder="Search for movies..."
+      v-model="searchQuery"
+      class="w-full md:w-[70%] px-4 py-2 md:py-2 md:ml-2 border text-white border-gray-800 rounded-md focus:outline-none focus:border-[#c92502] bg-[#3B3B3B] mb-2 md:mb-0"
+    />
+
+    <button class="flex-shrink-0 w-auto text-lg text-white bg-[#c92502] py-2 px-4 rounded md:ml-2 mt-2 md:mt-0">
+      View Favorites
+    </button>
+  </div>
+</div>
 
     <!-- Movies section -->
     <div
@@ -75,7 +81,7 @@
             {{ movie.vote_average.toFixed(1) }}
           </p>
           <p
-            class="absolute md:bottom-0 bottom-14 left-0 py-2 px-3 text-white text-sm"
+            class="absolute md:bottom-0 bottom-0 left-0 py-2 px-3 text-white text-sm"
           >
             {{ movie.original_title }}
           </p>
@@ -98,9 +104,29 @@
                 movie.poster_path
               )
             "
-            class="absolute top-2 right-2 text-lg text-white bg-[#c92502] py-1 px-2 rounded-full"
+            class="absolute top-2 right-2 text-lg text-white py-1 px-2 rounded-full"
           >
-            {{ isFavorite(movie.id) ? "Remove Favorite" : "Add Favorite" }}
+            <svg
+              :class="{
+                'text-yellow-500 hover:text-white fill-current': isFavorite(
+                  movie.id
+                ),
+                'text-white hover:text-yellow-500 fill-current': !isFavorite(
+                  movie.id
+                ),
+              }"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-8 h-8 transition-colors duration-300 ease-in-out"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
+              />
+            </svg>
           </button>
         </div>
         <div class="mt-4">
@@ -140,7 +166,12 @@ const user = auth.currentUser;
 const isFavorite = (movieId: number) => {
   return userFavorites.value.includes(movieId);
 };
-const toggleFavorite = (movieId: number,title: string,overview: string,poster_path: string) => {
+const toggleFavorite = (
+  movieId: number,
+  title: string,
+  overview: string,
+  poster_path: string
+) => {
   if (!user) {
     return;
   }
@@ -223,13 +254,7 @@ const viewDetails = (movieId: number) => {
   router.push(`/movies/${movieId}`);
 };
 
-onMounted(async () => {
-  onAuthStateChanged(auth, (user) => {
-    isLoggedIn.value = !!user;
-  });
-
-  getMovies();
-
+const getFavorites = async () => {
   if (auth.currentUser) {
     const userId = auth.currentUser.uid;
     const response = await axios.get(
@@ -240,6 +265,15 @@ onMounted(async () => {
       : [];
     console.log("fave", userFavorites.value);
   }
+};
+
+onMounted(async () => {
+  onAuthStateChanged(auth, (user) => {
+    isLoggedIn.value = !!user;
+  });
+
+  getFavorites();
+  getMovies();
 });
 </script>
 
