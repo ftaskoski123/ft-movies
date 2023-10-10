@@ -1,42 +1,7 @@
 <template>
   <div>
     <!-- Hero section -->
-    <div class="hero">
-      <img
-        src="../assets/movieHero.jpg"
-        alt=""
-        class="w-full h-full object-cover"
-      />
-      <div
-        class="z-[99] absolute w-full h-full flex flex-col justify-center m-0 top-0"
-      >
-        <button
-          @click="handleSignOut"
-          class="text-xl text-white bg-[#c92502] top-4 right-4 py-2 px-4 rounded absolute"
-        >
-          Sign Out
-        </button>
-        <div class="w-full max-w-[1400px] mx-auto my-0 px-4 py-0">
-          <span
-            class="font-semibold text-lg uppercase text-[#c92502] mb-2 md:text-[22px]"
-          >
-            Now Streaming
-          </span>
-          <h1
-            class="text-white text-4xl font-extralight mb-2 md:text-5xl lg:text-6xl"
-          >
-            <span class="font-medium">Now</span> Streaming
-          </h1>
-          <button
-            @click="scrollToMovies"
-            href="#"
-            class="text-xl self-start text-white bg-[#c92502] py-2 px-4 rounded"
-          >
-            View Movies
-          </button>
-        </div>
-      </div>
-    </div>
+    <Hero/>
 
     <!-- Search input -->
     <div class="max-w-[400px] mx-auto md:absolute px-4 md:mb-20 md:mt-2">
@@ -113,12 +78,7 @@
           </button>
         </div>
         <div class="mt-4">
-          <button
-            @click="viewDetails(movie.id)"
-            class="text-xl text-white hover:bg-[#c92502] rounded border border-[#c92502] py-2 px-4"
-          >
-            Get More Info
-          </button>
+        <MoreInfo :movie="movie"/>
         </div>
       </div>
     </div>
@@ -131,6 +91,8 @@ import axios from "axios";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 import Movies from "@/components/Movies.vue";
+import Hero from "@/components/Hero.vue";
+import MoreInfo from "@/components/moreInfo.vue";
 
 const router = useRouter();
 const isLoggedIn = ref<boolean>(false);
@@ -179,18 +141,7 @@ const toggleFavorite = (
   }
 };
 
-const handleSignOut = () => {
-  signOut(auth).then(() => {
-    router.push("/login");
-  });
-};
 
-const scrollToMovies = () => {
-  const moviesElement = document.getElementById("movies");
-  if (moviesElement) {
-    moviesElement.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-};
 
 const getMovies = async () => {
   const response = axios.get(
@@ -207,8 +158,6 @@ const getsearchedMovies = async () => {
   );
   const data = await response;
   searchedMovies.value = data.data.results;
-
-  console.log(searchedMovies.value);
 };
 
 const viewDetails = (movieId: number) => {
@@ -248,12 +197,5 @@ onMounted(async () => {
   opacity: 0;
 }
 
-.hero {
-  @apply h-[400px] relative after:content-[''] after:absolute after:h-full after:w-full after:bg-[rgba(0,0,0,0.6)] after:left-0 after:top-0;
-}
-@media (min-width: 750px) {
-  .hero {
-    @apply h-[500px];
-  }
-}
+
 </style>

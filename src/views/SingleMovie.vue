@@ -4,7 +4,7 @@
       @click="$router.go(-1)"
       class="bg-red-500 px-4 py-2 text-sm 2k:left-[25%] font-medium absolute top-5 left-5 md:top-[6%] md:left-[5%] 2xl:left-[15%] 2xl:top-[9%] rounded text-white hover:bg-red-700"
     >
-      Back
+    Go back
     </button>
     <div
       v-for="movie in movies"
