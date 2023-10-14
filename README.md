@@ -1,40 +1,49 @@
-# ft-movies
+# Movie Time 🍿
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+Movie Time is your ultimate movie companion, designed for movie enthusiasts like you. With its sleek and user-friendly interface, it offers a range of features to enhance your movie-watching experience.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Features
 
-## Type Support for `.vue` Imports in TS
+- **Create Your Account:** Sign up and create your personal account to unlock the full potential of Movie Time.
+- **Discover Popular and New Movies** Explore a vast collection of both popular and new movies, keeping you up to date with the latest releases and fan favorites.
+- **Search for Movies:**  Easily search for any movie you desire, with comprehensive information at your fingertips.
+- **Favorite Movies:** Toggle your favorite movies, adding or removing them with a simple click.
+- **View Your Favorite Movies:** Access your list of favorite movies whenever you want, so you can quickly find what to watch next.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Getting Started
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+To get started with the project, follow these steps:
 
-## Customize configuration
+1. **Clone the Repository:**
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+   Clone this repository to your local machine using the following command:
 
-## Project Setup
+   ```bash
+   git clone https://github.com/ftaskoski123/ft-movies.git
 
-```sh
-npm install
+2.**Navigate to the Project Directory:**
+
+Open a terminal or command prompt and navigate to the project directory
+
+3.**Install Dependencies:**
+
+Install the project dependencies by running the following command:
+```bash
+npm install 
 ```
 
-### Compile and Hot-Reload for Development
+This command will download and install the necessary packages.
 
-```sh
+4.**Start the Development Server:**
+
+Start the "Find a Coach" application on your local machine with this command:
+```
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+The app will be accessible in your web browser at http://localhost:5173 (or another port if specified).
 
-```sh
-npm run build
-```
+## Embark on Your Cinematic Journey with Movie Time!
+Now you can explore the world of movies with Movie Time. Create an account, search for movies, toggle your favorite films, and enjoy a personalized movie-watching experience. Start building your ultimate watchlist today at [ft-movie-app.netlify.app](https://ft-movie-app.netlify.app). 🎥🎬
