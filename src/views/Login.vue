@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <div>
       <img
         src="../assets/movieHero.jpg"
