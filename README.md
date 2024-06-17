@@ -38,7 +38,7 @@ This command will download and install the necessary packages.
 
 4.**Start the Development Server:**
 
-Start the "Find a Coach" application on your local machine with this command:
+Start the "Movie Time" application on your local machine with this command:
 ```
 npm run dev
 ```
