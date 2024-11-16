@@ -101,6 +101,7 @@ const apiKey = "7b5d0f8cf0589dd9221f592daa43db40";
 const movies = ref<any>([]);
 const searchedMovies = ref<any>([]);
 const searchQuery = ref<string>("");
+let debounceTime : number | undefined = undefined;
 
 const userFavorites = ref<any[]>([]);
 
@@ -153,16 +154,19 @@ const getMovies = async () => {
 };
 
 const getsearchedMovies = async () => {
-  const response = axios.get(
+
+  clearTimeout(debounceTime);
+
+ debounceTime = setTimeout(async() => {
+    const response = axios.get(
     `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&page=1&query=${searchQuery.value}`
   );
   const data = await response;
   searchedMovies.value = data.data.results;
+  }, 1000);
+
 };
 
-const viewDetails = (movieId: number) => {
-  router.push(`/movies/${movieId}`);
-};
 
 const getFavorites = async () => {
   if (auth.currentUser) {
